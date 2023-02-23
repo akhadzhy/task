@@ -26,7 +26,7 @@ The solution consists of a Python script `app.py`, which accepts two command-lin
 
 To use the script, you need to have Python 3 installed on your system. You can run the script with the following command:
 ```
-python app.py --cpu_cores=N --pipeline=path/to/pipeline.txt
+python3 app.py --cpu_cores=N --pipeline=path/to/pipeline.txt
 ```
 
 
@@ -45,11 +45,17 @@ The script outputs the minimum execution time of the pipeline and a scheduling d
 You can test the script with the provided `pipeline_small.txt` and `pipeline_big.txt` files in the `data` directory. Here's an example of how to run the script and what the output looks like:
 
 ```
-python app.py --cpu_cores=2 --pipeline=data/pipeline.txt
+python3 app.py --cpu_cores=2 --pipeline=data/pipeline.txt
 ```
 
 
 ## Tests
 
-The solution also includes a suite of tests in the `tests
+The solution also includes a suite of tests in the `tests`
+To run the tests, you can use the following command in your terminal:
+```
+python3 -m unittest discover -s . -p '*_test.py'
+```
 
+This command uses the `unittest` module built into Python to discover and run all test files in the `tests` directory that match the pattern `*_test.py`. 
+The command should be run in the same directory where your project files and `tests` directory are located.
