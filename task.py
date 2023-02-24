@@ -19,6 +19,7 @@ class Task:
         self.execution_time = execution_time
         self.group = group
         self.dependencies = dependencies
+        self.num_unresolved_deps = len(self.dependencies)
 
         # these will be filled in when the task is scheduled
         self.children = []      # tasks that depend on this task

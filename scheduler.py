@@ -33,19 +33,15 @@ def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
         groups[group].append(task)
 
     sorted_groups = sorted(groups.keys())
-    sorted_tasks = []
-    for group in sorted_groups:
-        sorted_tasks.extend(sorted(groups[group], key=lambda t: t.name))
 
-    # Schedule tasks using priority scheduling
+    # Schedule tasks using priority scheduling based on task dependencies
     schedule = {}
-    available_tasks = deque(sorted_tasks)
+    available_tasks = deque(filter(lambda task: task.num_unresolved_deps == 0, tasks))
     in_progress_tasks = []
     end_times = {}
-    time = 1  # Start at 1 so that we can handle tasks with execution time of 0 correctly
+    time = 1
     current_group = None
 
-    # Loop until all tasks are completed
     while available_tasks or in_progress_tasks:
         # Update the status of in-progress tasks that have finished
         for task in list(in_progress_tasks):
@@ -53,6 +49,12 @@ def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
                 in_progress_tasks.remove(task)
                 task.end_time = time
                 logger.info(f"Task {task.name} completed at time {time-1}")  # Subtract 1 because we start at 1
+
+                # Add children of completed task to available tasks
+                for child_task in task.children:
+                    child_task.num_unresolved_deps -= 1
+                    if child_task.num_unresolved_deps == 0:
+                        available_tasks.append(child_task)
 
         # Add new tasks to in-progress queue if there is capacity
         while available_tasks and len(in_progress_tasks) < cpu_cores:
@@ -80,7 +82,8 @@ def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
             if current_group is None:
                 break
             else:
-                sorted_groups.remove(current_group)
+                if current_group in sorted_groups:
+                    sorted_groups.remove(current_group)
                 if not sorted_groups:
                     break
                 current_group = None
