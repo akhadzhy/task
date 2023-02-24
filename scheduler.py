@@ -1,6 +1,8 @@
-# scheduler_test.py
+import logging
 from collections import deque
 from pipeline import Pipeline
+
+logger = logging.getLogger(__name__)
 
 
 def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
@@ -11,6 +13,8 @@ def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
     :param cpu_cores: the number of CPU cores available for executing tasks
     :return: a tuple containing the total execution time and a dictionary representing the scheduling diagram
     """
+    logger.info(f"Starting pipeline scheduling with {cpu_cores} CPU cores")
+
     # Get all the tasks in the pipeline
     tasks = pipeline.get_tasks()
 
@@ -48,6 +52,7 @@ def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
             if end_times[task.name] == time:
                 in_progress_tasks.remove(task)
                 task.end_time = time
+                logger.info(f"Task {task.name} completed at time {time-1}")  # Subtract 1 because we start at 1
 
         # Add new tasks to in-progress queue if there is capacity
         while available_tasks and len(in_progress_tasks) < cpu_cores:
@@ -58,6 +63,7 @@ def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
                     task.start_time = time
                     end_times[task.name] = time + task.execution_time
                     current_group = task.group
+                    logger.info(f"Task {task.name} started at time {time}")
                 else:
                     available_tasks.append(task)
                     break
@@ -84,4 +90,5 @@ def schedule_pipeline(pipeline: Pipeline, cpu_cores: int) -> (int, dict):
     # The execution time is the time when the last task completed
     execution_time = max(schedule.keys())
 
+    logger.info(f"Pipeline scheduling completed in {execution_time} minutes")
     return execution_time, schedule

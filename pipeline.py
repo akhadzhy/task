@@ -1,5 +1,8 @@
 # pipline.py
 from task import Task
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class Pipeline:
@@ -36,6 +39,7 @@ def parse_pipeline_file(file_path: str) -> Pipeline:
         Pipeline: A `Pipeline` object containing the tasks in the file.
     """
     pipeline = Pipeline()
+    logger.info(f"Parsing pipeline file: {file_path}")
     with open(file_path, 'r') as f:
         while True:
             task_name = f.readline().strip()
@@ -60,4 +64,6 @@ def parse_pipeline_file(file_path: str) -> Pipeline:
                 raise ValueError(f"Circular dependency detected: {task_name} depends on itself")
 
             pipeline.add_task(Task(task_name, execution_time, group, dependencies))
+
+    logger.info(f"Parsed {len(pipeline.get_tasks())} pipeline tasks")
     return pipeline

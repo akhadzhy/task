@@ -20,17 +20,21 @@ Each pipeline file consists of `4*n + 1` lines, describing the tasks in the pipe
 
 ## Solution
 
-The solution consists of a Python script `app.py`, which accepts two command-line arguments: `--pipeline` and `--cpu_cores`. The script parses the pipeline definition file and computes the minimum execution time of the pipeline, given the number of CPU cores to use for execution. The solution also includes two helper modules, `pipeline.py` and `scheduler.py`, which define the `Pipeline` and `Task` classes and the scheduling algorithm, respectively.
+The solution consists of a Python script `app.py`, which accepts three command-line arguments: `--pipeline`, `--cpu_cores`, and `--log_level`. The script parses the pipeline definition file and computes the minimum execution time of the pipeline, given the number of CPU cores to use for execution. The solution also includes two helper modules, `pipeline.py` and `scheduler.py`, which define the `Pipeline` and `Task` classes and the scheduling algorithm, respectively.
+
+The logger has been added to the project to make it easier to diagnose issues. The logging level can be specified as an optional argument `--log_level` with default value `WARNING` during the execution of the script.
 
 ## How to Use
 
 To use the script, you need to have Python 3 installed on your system. You can run the script with the following command:
 ```
-python3 app.py --cpu_cores=N --pipeline=path/to/pipeline.txt
+python3 app.py --cpu_cores=N --pipeline=path/to/pipeline.txt --log_level=INFO
 ```
 
 
-Replace `path/to/pipeline.txt` with the path to your pipeline definition file and `N` with the number of CPU cores to use for execution.
+
+
+Replace `path/to/pipeline.txt` with the path to your pipeline definition file, `N` with the number of CPU cores to use for execution, and `INFO` with the desired logging level (DEBUG, INFO, WARNING, ERROR). 
 
 ## Scheduling Diagram
 
@@ -45,7 +49,7 @@ The script outputs the minimum execution time of the pipeline and a scheduling d
 You can test the script with the provided `pipeline_small.txt` and `pipeline_big.txt` files in the `data` directory. Here's an example of how to run the script and what the output looks like:
 
 ```
-python3 app.py --cpu_cores=2 --pipeline=data/pipeline.txt
+python3 app.py --cpu_cores=2 --pipeline=data/pipeline.txt --log_level=DEBUG
 ```
 
 

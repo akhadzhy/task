@@ -1,5 +1,7 @@
-# task.py
+import logging
 from typing import List
+
+logger = logging.getLogger(__name__)
 
 
 class Task:
@@ -24,6 +26,9 @@ class Task:
         self.start_time = 0     # the time when this task starts executing
         self.end_time = 0       # the time when this task finishes executing
 
+        logger.debug(
+            f"Created task {name} with execution time {execution_time}, group {group}, and dependencies {dependencies}")
+
     def add_child(self, task):
         """
         Add a child task to this task's list of dependent tasks.
@@ -33,6 +38,8 @@ class Task:
         """
         self.children.append(task)
         task.parents.append(self)
+
+        logger.debug(f"Task {self.name} added child task {task.name}")
 
     def __str__(self):
         """
