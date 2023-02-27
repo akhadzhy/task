@@ -20,6 +20,8 @@ class Task:
         self.group = group
         self.dependencies = dependencies
         self.num_unresolved_deps = len(self.dependencies)
+        self.priority: int = 1
+        self.compound_priority: int = 1
 
         # these will be filled in when the task is scheduled
         self.children = []      # tasks that depend on this task
