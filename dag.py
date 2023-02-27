@@ -47,16 +47,16 @@ class DAG:
         self.graph_ids = DiGraphEx()
         self.exec_nodes = tasks
         self.node_dict: Dict[Hashable, Task] = {
-            exec_node.id: exec_node for exec_node in self.exec_nodes
+            exec_node.name: exec_node for exec_node in self.exec_nodes
         }
         self.graph = {}
 
         # variables necessary for DAG construction
         self.backwards_hierarchy: Dict[Hashable, List[Hashable]] = {
-            exec_node.id: exec_node.depends_on for exec_node in self.exec_nodes
+            exec_node.name: exec_node.dependencies for exec_node in self.exec_nodes
         }
         self.node_dict: Dict[Hashable, Task] = {
-            exec_node.id: exec_node for exec_node in self.exec_nodes
+            exec_node.name: exec_node for exec_node in self.exec_nodes
         }
 
         self.node_dict_by_name: Dict[str, Task] = {
