@@ -1,4 +1,6 @@
 # pipline.py
+from typing import List
+
 from task import Task
 import logging
 
@@ -17,6 +19,16 @@ class Pipeline:
             task (Task): The task to add.
         """
         self.tasks.append(task)
+
+    def add_tasks(self, task: List[Task]):
+        """
+        Add a tasks to the pipeline.
+
+        Args:
+            task List(Task): The task to add.
+        """
+        for task in task:
+            self.add_task(task)
 
     def get_tasks(self):
         """
