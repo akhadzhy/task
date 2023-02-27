@@ -26,7 +26,11 @@ The logger has been added to the project to make it easier to diagnose issues. T
 
 ## How to Use
 
-To use the script, you need to have Python 3 installed on your system. You can run the script with the following command:
+To use the script, you need to have Python 3 installed on your system. You can install the required packages by running the following command:
+```
+pip install -r requirements.txt
+```
+Next, run the script with the following command:
 ```
 python3 app.py --cpu_cores=N --pipeline=path/to/pipeline.txt --log_level=INFO
 ```
