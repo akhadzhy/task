@@ -19,5 +19,12 @@ class TaskTestCase(unittest.TestCase):
         self.assertIn(task1, task2.parents)
 
     def test_str(self):
-        task = Task('test', 5, 'group1', ['dep1', 'dep2'])
-        self.assertEqual(str(task), "test (5) ['dep1', 'dep2']")
+        task = Task(name='task1', execution_time=10, group='group1', dependencies=['task2', 'task3'])
+        task.start_time = 0
+        task.end_time = 20
+        child1 = Task(name='task2', execution_time=5, group='group1', dependencies=[])
+        child2 = Task(name='task3', execution_time=8, group='group2', dependencies=[])
+        task.add_child(child1)
+        task.add_child(child2)
+        expected_output = "Task(name=task1, execution_time=10, group=group1, dependencies=['task2', 'task3'], start_time=0, end_time=20, children=[task2, task3], parents=[])"
+        assert str(task) == expected_output
