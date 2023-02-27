@@ -42,11 +42,30 @@ class Task:
 
         logger.debug(f"Task {self.name} added child task {task.name}")
 
-    def __str__(self):
+    def done(self, time: int) -> bool:
+        """
+        Check if the task is done executing.
+
+        Args:
+            time (int): The current time.
+
+        Returns:
+            bool: True if the task is done, False otherwise.
+        """
+        return time >= self.end_time
+
+    def __str__(self) -> str:
         """
         Return a string representation of the task.
 
         Returns:
             str: The string representation of the task.
         """
-        return f'{self.name} ({self.execution_time}) {self.dependencies}'
+        return (f"Task(name={self.name}, "
+                f"execution_time={self.execution_time}, "
+                f"group={self.group}, "
+                f"dependencies={self.dependencies}, "
+                f"start_time={self.start_time}, "
+                f"end_time={self.end_time}, "
+                f"children=[{', '.join(child.name for child in self.children)}], "
+                f"parents=[{', '.join(parent.name for parent in self.parents)}])")
